@@ -86,4 +86,23 @@ router.get('/osszeg', async (request, response) => {
     };
 });
 
+router.get('/szorzat', async (request, response) => {
+    try{
+        const content = await readTextFile(path.join(__dirname, "..files/szamok.txt"));
+
+        let numbers = content.split(',');
+        let szorzat = numbers[0] * numbers[numbers.Count];
+
+        response.status(200).json({
+            result: szorzat
+        });
+       
+    } catch (error) {
+        console.log('GET /api/readfile error:', error);
+        response.status(200).json({
+            error: "szerer Hiba"
+        });
+    }
+})
+
 module.exports = router;
