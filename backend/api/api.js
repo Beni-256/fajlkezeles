@@ -41,4 +41,49 @@ router.get('/testsql', async (request, response) => {
     }
 });
 
+
+const fs = require('fs/promises');
+
+const readTextFile = async (filePath) => {
+    try{
+        const text = await fs.readFile(filePath, 'utf8');
+        return text;
+    } catch (error) {
+        throw new Error (`Olvasási hiba (text): ${error.message}`);
+    };
+};
+
+router.get('/read-text', async (request, response) => {
+    try{
+        const content = await readTextFile('adatok.txt');
+        response.status(200).json({ content: content});
+    } catch (error) {
+        console.log('GET /api/read-text error:', error);
+        response.status(500).json({error: 'Interal server error'});
+    };
+});
+
+
+
+router.get('/osszeg', async (request, response) => {
+    try{
+        const content = await readTextFile(path.join(__dirname, "../files/szamok.txt"));
+
+        let numbers = content.split(',');
+        let osszeg = 0;
+        for(const item of numbers) {
+            osszeg += parseInt(item);
+        };
+
+        response.status(200).json({
+            result: osszeg
+        });
+    } catch (error) {
+        console.log('GET /api/readfile error:', error);
+        response.status(200).json({
+            error: "szerer Hiba"
+        });
+    };
+});
+
 module.exports = router;

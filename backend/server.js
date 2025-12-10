@@ -28,6 +28,10 @@ router.get('/', (request, response) => {
     response.sendFile(path.join(__dirname, '../frontend/html/index.html'));
 });
 
+router.get('/masodikFeladat', (request, response) => {
+    response.sendFile(path.join(__dirname, '../frontend/html/masodikFeladat.html'));
+});
+
 //!API endpoints
 app.use('/', router);
 const endpoints = require('./api/api.js');
@@ -42,3 +46,20 @@ app.listen(port, ip, () => {
 //?Szerver futtatása terminalból: npm run dev
 //?Szerver leállítása (MacBook és Windows): Control + C
 //?Terminal ablak tartalmának törlése (MacBook): Command + K
+
+
+const fsSync = require('fs');
+
+const writeFileSync = () => {
+    let numbers = [];
+    for(let i = 0; i < 20; i++){
+        numbers.push(Math.floor(Math.random() * (50 - 1 + 1)) + 1);
+    }
+    fsSync.writeFileSync(
+        path.join(__dirname, '../backend/files/szamok.txt'),
+        numbers.join(','),
+        'utf8'
+    );
+};
+writeFileSync();
+
